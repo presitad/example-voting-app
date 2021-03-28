@@ -2,19 +2,19 @@ version: "3"
 
 services:
   vote:
-    build: ./vote
+    image: example-voting-app_vote:latest
     command: python app.py
     volumes:
      - ./vote:/app
     ports:
-      - "5000:80"
+      - "80:80"
 
   redis:
     image: redis:alpine
     ports: ["6379"]
 
   worker:
-    build: ./worker
+    image: example-voting-app_worker:latest
 
   db:
     image: postgres:9.4
@@ -23,10 +23,10 @@ services:
       POSTGRES_PASSWORD: "postgres"
 
   result:
-    build: ./result
+    image: example-voting-app_result:latest
     command: nodemon server.js
     volumes:
       - ./result:/app
     ports:
-      - "5001:80"
+      - "8080:80"
       - "5858:5858"
