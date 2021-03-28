@@ -7,7 +7,7 @@ services:
     volumes:
      - ./vote:/app
     ports:
-      - "80:80"
+      - "80"
 
   redis:
     image: redis:alpine
@@ -30,3 +30,12 @@ services:
     ports:
       - "8080:80"
       - "5858:5858"
+
+  nginx:
+    build: ./nginx
+    #volumes:
+    #  - ./nginx.conf
+    depends_on:
+      - vote
+    ports:
+      - "80:80"
