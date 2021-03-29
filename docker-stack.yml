@@ -12,6 +12,9 @@ services:
         delay: 10s
       restart_policy:
         condition: on-failure
+      placement:
+        constraints: 
+          - node.labels.type == backend
   db:
     image: postgres:9.4
     environment:
@@ -23,7 +26,9 @@ services:
       - backend
     deploy:
       placement:
-        constraints: [node.role == manager]
+        constraints:
+          - node.labels.type == backend
+
   vote:
     image: dockersamples/examplevotingapp_vote:before
     ports:
@@ -33,7 +38,7 @@ services:
     depends_on:
       - redis
     deploy:
-      replicas: 2
+      replicas: 3
       update_config:
         parallelism: 2
       restart_policy:
@@ -47,7 +52,7 @@ services:
     depends_on:
       - db
     deploy:
-      replicas: 1
+      replicas: 5
       update_config:
         parallelism: 2
         delay: 10s
